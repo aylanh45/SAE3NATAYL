@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Ajouter un genre</title>
+{% endblock %}
+
+{% block body %}
+     <fieldset class="fieldset_add_type">
+         <legend>Ajouter un genre</legend>
+
+         <form method="post" action="/genre-film/add" >
+             <div class="form-group">
+                 <label for="libelleGenre">Genre de film : <span class="obligatoire">*</span></label><br>
+                 <input id="libelleGenre" type="text" name="libelleGenre" size="18" value="" placeholder="Saisir le genre du film" required>
+                 <br>
+                 <button type="submit" class="btn btn-primary">Valider</button>
+                 <a class="btn btn-danger" href="/genre-film/show" >Annuler</a>
+             </div>
+
+         </form>
+    </fieldset>
+{% endblock %}

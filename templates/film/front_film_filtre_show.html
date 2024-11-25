@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Filtre films</title>
+{% endblock %}
+
+{% block body %}
+
+    <form method="get" action="/film/filtre">
+        <div id="filtre">
+            <h3>Filtre films</h3>
+
+            <div class="menu-filtre">
+                <p>Film dont le nom est composé de :
+                    <input id="filter_word" type="text" name="filter_word" value="{{ request.args.get('filter_word', '') }}" placeholder="saisir un titre">
+                </p>
+
+                <div class="check-list">
+                    <p>Sélectionner le genre du film :</p>
+                    {% for genre in genresFilms %}
+                        <input type="checkbox" id="Vid_{{ genre.id }}" name="filter_items" value="{{ genre.id }}"
+                            {% if genre.id in request.args.getlist('filter_items') %} checked {% endif %}>
+                        <label for="Vid_{{ genre.id }}">{{ genre.libelleGenre }}</label><br>
+                    {% endfor %}
+                </div>
+
+                <p>Durée (en minutes) comprise entre
+                    <input id="colonne1" type="number" name="filter_value_min" value="{{ request.args.get('filter_value_min', '') }}"><br> et<br>
+                    <input id="colonne2" type="number" name="filter_value_max" value="{{ request.args.get('filter_value_max', '') }}">
+                </p>
+                <button type="submit" class="btn btn-primary">Soumettre le filtre</button>
+            </div>
+        </div>
+
+        <div id="myDIV">
+            {% for film in films %}
+                <div class="card" style="width: 18rem;">
+                    <img src="/static/images/{{ films.affiche }}" alt="image de {{ films.titreFilm }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ films.titreFilm }}</h5>
+                        <p class="card-text">
+                            Durée : <strong>{{ films.duree }}</strong> <br>
+                            Date de sortie : <strong>{{ films.dateSortie }}</strong> <br>
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </form>
+{% endblock %}

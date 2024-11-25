@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Modifier un film</title>
+{% endblock %}
+
+{% block body %}
+     <fieldset class="fieldset_add_type">
+         <legend>Modifier un film</legend>
+
+         <form method="post" action="/film/edit" >
+             <div class="form-group">
+                 <input type="hidden" name="id" value="{{ films.id }}" id="id">
+                  <label for="titreFilm">Titre du film : <span class="obligatoire">*</span></label><br>
+                 <input id="titreFilm" type="text" name="titreFilm" size="18" value="{{ films.titreFilm }}" placeholder="Saisir le titre du film" required>
+
+                 <br><label for="dateSortie">Date de sortie : <span class="obligatoire">*</span></label><br>
+                 <input id="dateSortie" type="text" name="dateSortie" size="18" value="{{ films.dateSortie}}" placeholder="Saisir dateSortie" required><br>
+
+                 <label for="nomRealisateur">Nom du réalisateur : <span class="obligatoire">*</span></label><br>
+                 <input id="nomRealisateur" type="text" name="nomRealisateur" size="18" value="{{ films.nomRealisateur  }}" placeholder="Saisir nomRealisateur" required><br>
+
+                 <label for="duree">Durée : <span class="obligatoire">*</span></label><br>
+                 <input id="duree" type="text" name="duree" size="18" value="{{ films.duree }}" placeholder="Saisir une durée" required><br>
+
+                 <label for="genre_id">Genre du film : </label><br>
+<select name="genre_id" required>
+    {% for genre in genresFilms %}
+    <option value="{{ genre.id }}"
+            {% if films is defined and films.genre_id == genre.id %}selected{% endif %}>
+        {{ genre.libelleGenre }}
+    </option>
+    {% endfor %}
+</select><br>
+                <div class="mb-3">
+                <label for="affiche" class="form-label">Affiche : <span class="obligatoire">*</span></label>
+                <input class="form-control" type="text" id="affiche" name="affiche" value="{{ films.affiche  }}" required>
+            </div>
+
+                 <button type="submit" class="btn btn-primary">Valider</button>
+                 <a class="btn btn-danger" href="/film/show" >Annuler</a>
+             </div>
+
+         </form>
+    </fieldset>
+
+{% endblock %}
