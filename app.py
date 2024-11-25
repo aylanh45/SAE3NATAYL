@@ -6,6 +6,63 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = 'une cle(token) : grain de sel(any random string)'
 
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
+from flask import Flask, request, render_template, redirect, flash
+
+app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.secret_key = 'une cle(token) : grain de sel(any random string)'
+
+                                    ## à ajouter
+from flask import session, g
+import pymysql.cursors
+
+def get_db():
+    if 'db' not in g:
+        g.db =  pymysql.connect(
+            host="localhost",                 # à modifier
+            user="login",                     # à modifier
+            password="secret",                # à modifier
+            database="BDD_votrelogin",        # à modifier
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
+        # à activer sur les machines personnelles :
+        activate_db_options(db)
+    return g.db
+
+@app.teardown_appcontext
+def teardown_db(exception):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
+
+
+def activate_db_options(db):
+    cursor = db.cursor()
+    # Vérifier et activer l'option ONLY_FULL_GROUP_BY si nécessaire
+    cursor.execute("SHOW VARIABLES LIKE 'sql_mode'")
+    result = cursor.fetchone()
+    if result:
+        modes = result['Value'].split(',')
+        if 'ONLY_FULL_GROUP_BY' not in modes:
+            print('MYSQL : il manque le mode ONLY_FULL_GROUP_BY')   # mettre en commentaire
+            cursor.execute("SET sql_mode=(SELECT CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY'))")
+            db.commit()
+        else:
+            print('MYSQL : mode ONLY_FULL_GROUP_BY  ok')   # mettre en commentaire
+    # Vérifier et activer l'option lower_case_table_names si nécessaire
+    cursor.execute("SHOW VARIABLES LIKE 'lower_case_table_names'")
+    result = cursor.fetchone()
+    if result:
+        if result['Value'] != '0':
+            print('MYSQL : valeur de la variable globale lower_case_table_names differente de 0')   # mettre en commentaire
+            cursor.execute("SET GLOBAL lower_case_table_names = 0")
+            db.commit()
+        else :
+            print('MYSQL : variable globale lower_case_table_names=0  ok')    # mettre en commentaire
+    cursor.close()
 
 films = [
     {'id': 1 , 'titreFilm' : 'Le diner de con' , 'dateSortie' : '1998-04-15' , 'nomRealisateur' : 'Francis Veber' , 'genre_id' : 1 , 'duree' : 90, 'affiche':'film_1.jpg' },
@@ -46,6 +103,10 @@ def show_layout():
 
 @app.route('/genre-film/show', methods=['GET'])
 def show_genre():
+    mycursor = get_db().cursor()
+    sql = "SELECT * FROM genres ORDER BY libelleGenre ASC"
+    mycursor.execute(sql)
+    genresFilms = mycursor.fetchall()
     return render_template('genre/show_genre.html', genresFilms = genresFilms )
 
 @app.route('/genre-film/add', methods=['GET'])
@@ -54,8 +115,13 @@ def add_genre():
 
 @app.route('/genre-film/add', methods=['POST'])
 def valid_add_genre():
+    mycursor = get_db().cursor()
     libelleGenre = request.form.get('libelleGenre', '')
     logo = request.form.get('logo', '')
+    tuple_insert = (libelleGenre, logo)
+    sql = "INSERT INTO genres VALUES (%s, %s)"
+    mycursor.execute(sql, tuple_insert)
+    get_db().commit()
     print(u'ville ajoutée , Ville :', libelleGenre, logo)
     message = u'Genre ajouté , Genre:'+libelleGenre + ' - logo' + logo
     flash(message, 'alert-success')
@@ -63,7 +129,12 @@ def valid_add_genre():
 
 @app.route('/genre-film/delete', methods=['GET'])
 def delete_genre():
+    mycursor = get_db().cursor()
     id = request.args.get('id', '')
+    tuple_delete = (id, )
+    sql = "DELETE FROM genres WHERE id = %s"
+    mycursor.execute(sql, tuple_delete)
+    get_db().commit()
     print ("Un genre supprimé, id :",id)
     message=u'Un genre supprimé, id : ' + id
     flash(message, 'alert-warning')
@@ -71,15 +142,24 @@ def delete_genre():
 
 @app.route('/genre-film/edit', methods=['GET'])
 def edit_genre(genresFilms=None):
+    mycursor = get_db().cursor()
     id = request.args.get('id', '')
+    sql = "SELECT id,libelleGenre FROM genres WHERE id = %s"
+    mycursor.execute(sql, (id))
+    genresFilms = mycursor.fetchone()
     id=int(id)
     genresFilms = genresFilms[id-1]
     return render_template('genre/edit_genre.html', genresFilms = genresFilms )
 
 @app.route('/genre-film/edit', methods=['POST'])
 def valid_edit_genre():
-    libelleGenre = request.form.get('libelle', '')
+    mycursor = get_db().cursor()
+    libelleGenre = request.form['libelle']
     id = request.form.get('id', '')
+    tuple_update = (id, libelleGenre)
+    sql = "UPDATE genres SET libelleGenre = %s WHERE id = %s"
+    mycursor.execute(sql, tuple_update)
+    get_db().commit()
     logo = request.form.get('logo', '')
     print(u'Genre modifié, id: ',id, " - Genre :", libelleGenre, " - Film :", logo)
     message=u'Genre modifié, id: ' + id + " - Genre : " + libelleGenre + " - Logo : " + logo
@@ -88,20 +168,35 @@ def valid_edit_genre():
 
 @app.route('/film/show', methods=['GET'])
 def show_film():
+    mmycursor = get_db().cursor()
+    sql = "SELECT * FROM films"
+    mmycursor.execute(sql)
+    films = mmycursor.fetchall()
+    print(films)
     return render_template('film/show_film.html', films=films)
 
 @app.route('/film/add', methods=['GET'])
 def add_film():
+    mycursor = get_db().cursor()
+    sql = "SELECT id AS id, libelle AS libelleGenre FROM genresFilms"
+    mycursor.execute(sql)
+    genresFilms = mycursor.fetchall()
     return render_template('film/add_film.html', films=films, genresFilms=genresFilms)
 
 @app.route('/film/add', methods=['POST'])
 def valid_add_film():
+    mycursor = get_db().cursor()
+
     titreFilm = request.form.get('titreFilm', '')
     dateSortie = request.form.get('dateSortie', '')
     nomRealisateur = request.form.get('nomRealisateur', '')
     genre_id = request.form.get('genre_id', '')
     duree = request.form.get('duree', '')
     affiche = request.form.get('affiche', '')
+    tuple_insert =(titreFilm, dateSortie, nomRealisateur, genre_id, duree, affiche)
+    sql = "INSERT INTO films VALUES (%s, %s, %s, %s, %s, %s)"
+    mycursor.execute(sql, tuple_insert)
+    get_db().commit()
     message = u'Film ajouté ' + ',  titreFilm:' + titreFilm + ' - dateSortie:' + dateSortie + ' - nomRealisateur:'+  nomRealisateur + ' - genre_id:' + genre_id + ' - duree:' + duree + ' - affiche:' + affiche
     print(message)
     flash(message, 'alert-success')
@@ -109,26 +204,39 @@ def valid_add_film():
 
 @app.route('/film/delete', methods=['GET'])
 def delete_film():
+    mycursor = get_db().cursor()
     id = request.args.get('id', '')
+    tuple_delete = (id, )
+    sql = "DELETE FROM films WHERE id = %s"
+    mycursor.execute(sql, tuple_delete)
+    get_db().commit()
     message=u'un film supprimé, id : ' + id
     flash(message, 'alert-warning')
     return redirect('/film/show')
 
 @app.route('/film/edit', methods=['GET'])
 def edit_film(genresFilms=None):
+    mycursor = get_db().cursor()
     id = request.args.get('id', '')
+    sql = "SELECT id,titreFilm,genre_id,duree,dateSortie,nomRealisateur,affiche FROM films WHERE id = %s"
+    mycursor.execute(sql, id)
+    films = mycursor.fetchall()
     id=int(id)
-    genresFilms = genresFilms[id-1]
     return render_template('film/edit_film.html', films=films, genresFilms=genresFilms)
 
 @app.route('/film/edit', methods=['POST'])
 def valid_edit_film():
+    mycursor = get_db().cursor()
     titreFilm = request.form.get('titreFilm', '')
     dateSortie = request.form.get('dateSortie', '')
     nomRealisateur = request.form.get('nomRealisateur', '')
     genre_id = request.form.get('genre_id', '')
     duree = request.form.get('duree', '')
     affiche = request.form.get('affiche', '')
+    tuple_update = (titreFilm, dateSortie, nomRealisateur, genre_id, duree, affiche)
+    sql = "UPDATE films SET titreFilm = %s, dateSortie=%s, nomRealisateur=%s, genre_id=%s, duree=%s, affiche=%s WHERE id = %s"
+    mycursor.execute(sql, tuple_update)
+    get_db().commit()
     message = u'Parking modifié' + ', titreFilm:' + titreFilm + ' - id :' + id + ' - dateSortie:' + dateSortie + ' - nomRealisateur:' + nomRealisateur + ' - genre_id:' + genre_id + ' - duree:' + duree + ' - affiche:' + affiche
     print(message)
     flash(message, 'alert-success')
