@@ -62,6 +62,8 @@ CREATE TABLE Etape
     Id_Etape          INT AUTO_INCREMENT,
     DistanceParcourue INT,
     Id_MoyenTransport INT NOT NULL,
+    Heure_depart    TIME ,
+    Heure_arrivee   TIME ,
     Id_Lieu_depart    INT NOT NULL ,
     Id_Lieu_arrivee   INT NOT NULL ,
     Id_Mission        INT NOT NULL,
@@ -121,12 +123,12 @@ VALUES (NULL, 'Train', 0.19),
        (NULL, 'Voiture', 0.214)
 ;
 
-INSERT INTO Etape(Id_Etape, DistanceParcourue, id_MoyenTransport, Id_Mission, Id_Lieu_depart, Id_Lieu_arrivee)
-VALUES (NULL, '315', 1, 1,3,4),
-       (NULL, '576', 4, 2,6,2),
-       (NULL, '4', 3, 3,7,1),
-       (NULL, '819', 2, 4,9,1),
-       (NULL, '224', 5, 5,3,4)
+INSERT INTO Etape(Id_Etape, DistanceParcourue, id_MoyenTransport, Id_Mission, Heure_depart, Heure_arrivee, Id_Lieu_depart, Id_Lieu_arrivee)
+VALUES (NULL, '315', 1, 1,"17:03:04","19:43:48",4, 5),
+       (NULL, '576', 4, 2,"16:59:34","17:03:04",6,2),
+       (NULL, '4', 3, 3,"09:38:50", "16:59:34",7,1),
+       (NULL, '819', 2, 4,"16:59:34", "09:38:50",1),
+       (NULL, '224', 5, 5,"16:59:34", "19:43:48", 3,4)
 ;
 
 

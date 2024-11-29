@@ -30,19 +30,22 @@
                 <td>{{ etudiant['id'] }}</td><td>{{ etudiant['nom'] }}</td><td>{{ etudiant['groupe'] }}</td>
             #}
                 <td>{{ etape.id }}</td>
-                <td>{{ etape.Distance parcourue }}</td>
-                <td>{{ mission.MoyenTransport }}</td>
-                <td>{{ mission.Kg_CO2 }}</td>
-                <td>{{ mission.Nom }}</td>
+                <td>{{ etape.DistanceParcourue }}</td>
+                <td>{{ etape.MoyenTransport }}</td>
+                <td>{{ etape.HeureDepart }}</td>
+                <td>{{ etape.HeureArrivee  }}</td>
+                <td>{{ etape.LieuDepart }}</td>
+                <td>{{ etape.LieuArrivee }}</td>
+                <td>{{ etape.IdMission }}</td>
                 <td>
-                      <a href="/mission/edit?id={{ mission.id }}">editer</a>&nbsp;
-                      <a href="/mission/delete?id={{ mission.id }}" >supprimer</a>
+                      <a href="/etape/edit?id={{ etape.id }}">editer</a>&nbsp;
+                      <a href="/etape/delete?id={{ etape.id }}" >supprimer</a>
                   </td>
             </tr>
         {% endfor %}
     </table>
 {% else %}
-    <h2> la liste des missions est vide</h2>
+    <h2> la liste des étapes est vide</h2>
 {% endif %}
 
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
