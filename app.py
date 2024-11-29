@@ -137,7 +137,7 @@ if __name__ == '__main__':
 @app.route('/etape/show')
 def show_etapes():
 mycursor = get_db().cursor()
-sql= ''' SELECT Etape.Id_Etape AS id, Etape.DistanceParcourue AS DistanceParcourue, Etape.Id_MoyenTransport AS Id_MoyenTransport, Etape.Id_Lieu_depart AS Id_Lieu_depart, Etape.Id_Lieu_arrivee AS Id_Lieu_arrivee, Etape.Id_Mission AS Id_Mission 
+sql= ''' SELECT Etape.Id_Etape AS id, Etape.DistanceParcourue AS DistanceParcourue, Etape.Id_MoyenTransport AS MoyenTransport, Etape.Heure_depart AS HeureDepart, Etape.Heure_arrivee AS HeureArrivee, Etape.Id_Lieu_depart AS LieuDdepart, Etape.Id_Lieu_arrivee AS LieuArrivee, Etape.Id_Mission AS Id_Mission 
 FROM Etape'''
 mycursor.execute(sql)
 liste_etapes = mycursor.fetchall()
