@@ -9,29 +9,29 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='mes_styles.css') }}" >
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" >
-    <title>Missions</title>
+    <title>Etapes</title>
 </head>
 {% extends 'layout.html' %}
 <body>
 
 {#{{ missions }}#}
-<h1>listes des missions<img src="{{ url_for('static', filename='image_iut.jpeg') }}" alt="image iut"  /></h1>
+<h1>listes des étapes<img src="{{ url_for('static', filename='image_iut.jpeg') }}" alt="image iut"  /></h1>
 
-<a href="/mission/add" >ajouter une mission</a>
+<a href="/etape/add" >ajouter une étape</a>
 
 {% if missions | length >= 1 %}
     <table>
         <tr>
-            <th>id</th><th>Date de début</th><th>Date de fin</th><th>Kg Co2</th><th>Agent</th>
+            <th>id</th><th>Moyen de transport</th><th>Distance parcourue</th><th>Heure de départ</th><th>Heure d'arrivée</th><th>Lieu de départ</th><th>Lieu d'arrivée</th><th>Id mission</th>
         </tr>
-        {% for mission in missions %}
+        {% for etape in etapes %}
             <tr>
                 {# commentaires : autre notation possible, on affiche un element du dictionnaire
                 <td>{{ etudiant['id'] }}</td><td>{{ etudiant['nom'] }}</td><td>{{ etudiant['groupe'] }}</td>
             #}
-                <td>{{ mission.id }}</td>
-                <td>{{ mission.DateDébut }}</td>
-                <td>{{ mission.DateFin }}</td>
+                <td>{{ etape.id }}</td>
+                <td>{{ etape.Distance parcourue }}</td>
+                <td>{{ mission.MoyenTransport }}</td>
                 <td>{{ mission.Kg_CO2 }}</td>
                 <td>{{ mission.Nom }}</td>
                 <td>
