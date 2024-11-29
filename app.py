@@ -131,30 +131,90 @@ def valid_edit_mission():
     return redirect('/mission/show')
 
 
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+
 
 @app.route('/etape/show')
 def show_etapes():
-mycursor = get_db().cursor()
-sql= ''' SELECT Etape.Id_Etape AS id, Etape.DistanceParcourue AS DistanceParcourue, Etape.Id_MoyenTransport AS MoyenTransport, Etape.Heure_depart AS HeureDepart, Etape.Heure_arrivee AS HeureArrivee, Etape.Id_Lieu_depart AS LieuDdepart, Etape.Id_Lieu_arrivee AS LieuArrivee, Etape.Id_Mission AS Id_Mission 
-FROM Etape'''
-mycursor.execute(sql)
-liste_etapes = mycursor.fetchall()
-return render_template('etape/show_etape.html', etapes=liste_etapes )
+    mycursor = get_db().cursor()
+    sql= ''' SELECT Etape.Id_Etape AS id, Etape.DistanceParcourue AS DistanceParcourue, Etape.Id_MoyenTransport AS Id_MoyenTransport, Etape.Id_Lieu_depart AS Id_Lieu_depart, Etape.Id_Lieu_arrivee AS Id_Lieu_arrivee, Etape.Id_Mission AS Id_Mission 
+    FROM Etape'''
+    mycursor.execute(sql)
+    liste_etapes = mycursor.fetchall()
+    return render_template('etape/show_etape.html', etapes=liste_etapes )
+
 @app.route('/etudiant/add', methods=['GET'])
-def add_etudiant(): print('''affichage du formulaire pour saisir un étudiant''')
-return render_template('etape/add_etape.html')
+def add_etudiant():
+    print('''affichage du formulaire pour saisir un étudiant''')
+    return render_template('etape/add_etape.html')
 @app.route('/etape/delete')
 def delete_etudiant():
-print('''suppression d'une étape''')
-print(request.args) print(request.args.get('id'))
-id=request.args.get('id')
+    print('''suppression d'une étape''')
+    print(request.args)
+    print(request.args.get('id'))
+    id=request.args.get('id')
 #delete
-mycursor = get_db().cursor()
-sql = ''' DELETE FROM etape WHERE Id_Etape = %s '''
-tuple_param=(id)
-mycursor.execute(sql, tuple_param)
-get_db().commit()
-return redirect('/etape/show')
+    mycursor = get_db().cursor()
+    sql = ''' DELETE FROM etape WHERE Id_Etape = %s '''
+    tuple_param=(id)
+    mycursor.execute(sql, tuple_param)
+    get_db().commit()
+    return redirect('/etape/show')
 
+@app.route('/etape/edit', methods=['GET'])
+def edit_etape():
+    print('''affichage du formulaire pour modifier une étape''')
+    print(request.args.get('id'))
+    id=request.args.get('id')
+    if id != None and id.isnumeric():
+        indice = int(id)
+        mycursor = get_db().cursor()
+        sql = ''' SELECT Etape.Id_Etape AS id, Etape.DistanceParcourue AS DistanceParcourue, Etape.Id_MoyenTransport AS Id_MoyenTransport, Etape.Id_Lieu_depart AS lieu_depart, Etape.Id_Lieu_arrivee AS Id_Lieu_arrivee, Etape.Id_Mission AS Id_Mission
+            FROM Etape
+            WHERE Etape.Id_Etape = %s;'''
+        mycursor.execute(sql, (id))
+        etape = mycursor.fetchone()
+    return render_template('etape/edit_etape.html', etape=etape)
+
+
+@app.route('/etape/add', methods=['POST'])
+def valid_add_etape():
+    print('''ajout de l'étape dans le tableau''')
+    Id_Etape = request.form.get('Id_Etape')
+    DistanceParcourue = request.form.get('DistanceParcourue') or ''
+    Id_MoyenTransport = request.form.get('Id_MoyenTransport') or ''
+    Id_Lieu_depart = request.form.get('Id_Lieu_depart') or ''
+    Id_Lieu_arrivee = request.form.get('Id_Lieu_arrivee') or ''
+    Id_Mission = request.form.get('Id_Mission') or ''
+    message = 'distance parcourue :' + DistanceParcourue + ' - le moyen de transport :' + Id_MoyenTransport  + ' - le lieu de départ : ' + Id_Lieu_depart + '- le lieu d arrivee : ' + Id_Lieu_arrivee + '- la mission :' + Id_Mission + '- l etape a pour identifiant : ' + Id_Etape
+    print(message)
+    #insert
+    mycursor = get_db().cursor()
+    sql = ''' INSERT INTO Etape (DistanceParcourue, Id_MoyenTransport, Id_Lieu_arrivee,Id_Lieu_depart, Id_Mission) 
+        VALUES (%s, %s, %s, %s, %s); '''
+    tuple_param = (DistanceParcourue, Id_MoyenTransport, Id_Lieu_arrivee, Id_Lieu_depart, Id_Mission)
+    mycursor.execute(sql, tuple_param)
+    get_db().commit()
+    return redirect('/etape/show')
+
+@app.route('/etape/edit', methods=['POST'])
+def valid_edit_etape():
+    print('''modification de l'étapedans le tableau''')
+    IdEtape = request.form.get('IdEtape')
+    DistanceParcourue = request.form.get('DistanceParcourue') or None
+    Id_MoyenTransport = request.form.get('Id_MoyenTransport') or None
+    Id_Lieu_arrivee = request.form.get('Id_lieu_arrivee') or None
+    Id_Lieu_depart = request.form.get('Id_Lieu_depart') or None
+    Id_Mission = request.form.get('Id_Mission') or None
+    sql = ''' UPDATE Etape
+                SET Distanceparcourue = %s, Id_MoyenTransport = %s, Id_Lieu_arrivee = %s, Id_Lieu_depart = %s, Id_Mission = %s
+                WHERE Id_Etape = %s; '''
+    tuple_param = (DistanceParcourue, Id_MoyenTransport, Id_Lieu_arrivee, Id_Lieu_depart, Id_Mission, Id_Etape)
+    mycursor = get_db().cursor()
+    mycursor.execute(sql, tuple_param)
+    get_db().commit()
+
+    return redirect('/mission/show')
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
