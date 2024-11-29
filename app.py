@@ -134,4 +134,27 @@ def valid_edit_mission():
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
 
+@app.route('/etape/show')
+def show_etapes():
+mycursor = get_db().cursor()
+sql= ''' SELECT Etape.Id_Etape AS id, Etape.DistanceParcourue AS DistanceParcourue, Etape.Id_MoyenTransport AS Id_MoyenTransport, Etape.Id_Lieu_depart AS Id_Lieu_depart, Etape.Id_Lieu_arrivee AS Id_Lieu_arrivee, Etape.Id_Mission AS Id_Mission 
+FROM Etape'''
+mycursor.execute(sql)
+liste_etapes = mycursor.fetchall()
+return render_template('etape/show_etape.html', etapes=liste_etapes )
+@app.route('/etudiant/add', methods=['GET'])
+def add_etudiant(): print('''affichage du formulaire pour saisir un étudiant''')
+return render_template('etape/add_etape.html')
+@app.route('/etape/delete')
+def delete_etudiant():
+print('''suppression d'une étape''')
+print(request.args) print(request.args.get('id'))
+id=request.args.get('id')
+#delete
+mycursor = get_db().cursor()
+sql = ''' DELETE FROM etape WHERE Id_Etape = %s '''
+tuple_param=(id)
+mycursor.execute(sql, tuple_param)
+get_db().commit()
+return redirect('/etape/show')
 
