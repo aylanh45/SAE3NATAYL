@@ -3,6 +3,8 @@
 from flask import Flask, request, render_template, redirect, flash
 from more_itertools.recipes import grouper
 #mysql --user=nfoucaul  --password=mdp --host=serveurmysql --database=BDD_nfoucaul
+
+#mysql --user=ahaddou2  --password=mdp --host=serveurmysql --database=BDD_ahaddou2
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = 'une cle(token) : grain de sel(any random string)'
