@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" >
     <title>Missions</title>
 </head>
+{% extends 'layout.html' %}
 <body>
 
 {#{{ missions }}#}
@@ -21,7 +22,7 @@
 {% if missions | length >= 1 %}
     <table>
         <tr>
-            <th>id</th><th>Date de début</th><th>Date de fin</th><th>Kg Co2</th>
+            <th>id</th><th>Date de début</th><th>Date de fin</th><th>Kg Co2</th><th>Agent</th>
         </tr>
         {% for mission in missions %}
             <tr>
@@ -32,6 +33,7 @@
                 <td>{{ mission.DateDébut }}</td>
                 <td>{{ mission.DateFin }}</td>
                 <td>{{ mission.Kg_CO2 }}</td>
+                <td>{{ mission.Nom }}</td>
                 <td>
                       <a href="/mission/edit?id={{ mission.id }}">editer</a>&nbsp;
                       <a href="/mission/delete?id={{ mission.id }}" >supprimer</a>
