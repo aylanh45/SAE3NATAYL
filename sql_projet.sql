@@ -139,12 +139,3 @@ SELECT * FROM Moyen_transport;
 SELECT * FROM Lieu;
 SELECT * FROM Mission;
 SELECT * FROM Etape;
-
-
-
-
-
-
-
-
-
