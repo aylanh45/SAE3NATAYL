@@ -19,7 +19,7 @@ def get_db():
             host="localhost",                 # à modifier
             user="ahaddou2",                     # à modifier
             password="mdp",                # à modifier
-            database="BDD_ahaddou",        # à modifier
+            database="BDD_ahaddou2",        # à modifier
             charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor
         )
