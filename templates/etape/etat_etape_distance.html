@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Distance Totale par Type de Mission</title>
+{% endblock %}
+
+{% block body %}
+    <h1>Distance Totale par Type de Mission</h1>
+    {% if distances | length > 0 %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Type de Mission</th>
+                    <th>Distance Totale (en km)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for distance in distances %}
+                    <tr>
+                        <td>{{ distance.LibelleTypeMission }}</td>
+                        <td>{{ distance.Distance_Totale }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune donnée disponible pour les distances par type de mission.</p>
+    {% endif %}
+{% endblock %}

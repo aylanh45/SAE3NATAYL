@@ -1,140 +1,66 @@
-.obligatoire {
-    font-size: 20px;
-    color: #e74c3c;
-}
 
-button a {
-    text-decoration: none;
-    color: #ffffff;
-}
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298); /* Dégradé dynamique */
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+        }
 
-.btn-add {
-    display: flex;
-    justify-content: center;
-}
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            color: #333333;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
 
-#myDIV {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    background-color: #ecf0f1;
-    margin: 5%;
-    border-radius: 25px;
-}
+        h1 {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #1e3c72;
+        }
 
-.card {
-    margin: 2%;
-    background-color: #ffffff;
-    border: 1px solid #bdc3c7;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+        }
 
-.card:hover {
-    filter: brightness(0.95);
-}
+        .form-control, .form-select {
+            border: 2px solid #1e3c72;
+            border-radius: 10px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-h3 {
-    display: flex;
-    justify-content: center;
-    color: #34495e;
-}
+        .form-control:focus, .form-select:focus {
+            border-color: #2a5298;
+            box-shadow: 0 0 10px rgba(42, 82, 152, 0.4);
+        }
 
-#filtre {
-    max-width: 500px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 2px solid #3498db;
-    border-radius: 10px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        button {
+            background: #1e3c72;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            transition: background 0.3s ease, transform 0.2s ease;
+            width: 90%;
+            margin: 20px;
+        }
 
-#filtre input[type="text"],
-#filtre input[type="number"] {
-    width: calc(100% - 20px);
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border: 1px solid #bdc3c7;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
+        button:hover {
+            background: #2a5298;
+            transform: translateY(-2px);
+        }
 
-#filtre h3 {
-    font-weight: bold;
-    color: #2c3e50;
-}
+        button:active {
+            transform: translateY(1px);
+        }
 
-.check-list input[type="checkbox"] {
-    margin-right: 1%;
-}
-
-.check-list label {
-    font-size: 14px;
-    color: #34495e;
-}
-
-#filtre p {
-    margin: 0 auto;
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-.fieldset_add_type {
-    max-width: 500px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 2px solid #3498db;
-    border-radius: 10px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.fieldset_add_type legend {
-    font-weight: bold;
-    font-size: 28px;
-    color: #333;
-    text-align: center;
-}
-
-.fieldset_add_type label {
-    font-size: 16px;
-    font-weight: bold;
-    color: #34495e;
-}
-
-.fieldset_add_type input[type="text"],
-.fieldset_add_type select,
-.fieldset_add_type input[type="file"] {
-    width: calc(100% - 20px);
-    padding: 8px;
-    border: 1px solid #bdc3c7;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-.fieldset_add_type button {
-    margin-top: 5%;
-    margin-bottom: 5%;
-    background-color: #3498db;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-}
-
-.fieldset_add_type button:hover {
-    background-color: #2980b9;
-}
-
-.table {
-    max-width: 1500px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 2px solid #3498db;
-    border-radius: 10px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        .mb-3 {
+            margin: 10px;
+        }

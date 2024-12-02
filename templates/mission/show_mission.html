@@ -1,50 +1,53 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon"  href="{{ url_for('static', filename='iconeweb.ico') }}" />
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='mes_styles.css') }}" >
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" >
-    <title>Missions</title>
-</head>
 {% extends 'layout.html' %}
-<body>
 
-{#{{ missions }}#}
-<h1>listes des missions<img src="{{ url_for('static', filename='image_iut.jpeg') }}" alt="image iut"  /></h1>
+{% block title %}
+    <title>Afficher les missions</title>
+{% endblock %}
 
-<a href="/mission/add" >ajouter une mission</a>
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Liste des Missions</h1>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="mb-0">Missions</h2>
+            <a href="/mission/add" class="btn btn-primary">Ajouter une mission</a>
+        </div>
 
-{% if missions | length >= 1 %}
-    <table>
-        <tr>
-            <th>id</th><th>Date de début</th><th>Date de fin</th><th>Kg Co2</th><th>Agent</th>
-        </tr>
-        {% for mission in missions %}
-            <tr>
-                {# commentaires : autre notation possible, on affiche un element du dictionnaire
-                <td>{{ etudiant['id'] }}</td><td>{{ etudiant['nom'] }}</td><td>{{ etudiant['groupe'] }}</td>
-            #}
-                <td>{{ mission.id }}</td>
-                <td>{{ mission.DateDébut }}</td>
-                <td>{{ mission.DateFin }}</td>
-                <td>{{ mission.Kg_CO2 }}</td>
-                <td>{{ mission.Nom }}</td>
-                <td>
-                      <a href="/mission/edit?id={{ mission.id }}">editer</a>&nbsp;
-                      <a href="/mission/delete?id={{ mission.id }}" >supprimer</a>
-                  </td>
-            </tr>
-        {% endfor %}
-    </table>
-{% else %}
-    <h2> la liste des missions est vide</h2>
-{% endif %}
-
-<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.js') }}"></script>
-</body>
-</html>
+        {% if missions | length >= 1 %}
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Date de début</th>
+                        <th>Date de fin</th>
+                        <th>Kg CO2</th>
+                        <th>Agent</th>
+                        <th>Type de mission</th>
+                        <th>Budget</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mission in missions %}
+                        <tr>
+                            <td>{{ mission.id }}</td>
+                            <td>{{ mission.DateDébut }}</td>
+                            <td>{{ mission.DateFin }}</td>
+                            <td>{{ mission.Kg_CO2 }}</td>
+                            <td>{{ mission.Nom }}</td>
+                            <td>{{ mission.TypeMission }}</td>
+                            <td>{{ mission.Budget }}</td>
+                            <td>
+                                <a href="/mission/edit?id={{ mission.id }}" class="btn btn-sm btn-warning">Éditer</a>
+                                <a href="/mission/delete?id={{ mission.id }}" class="btn btn-sm btn-danger">Supprimer</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info text-center">
+                <strong>La liste des missions est vide.</strong>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

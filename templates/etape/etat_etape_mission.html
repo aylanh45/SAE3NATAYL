@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Analyse des Agents et leurs Missions</title>
+{% endblock %}
+
+{% block body %}
+    <h1>Analyse des Agents et leurs Missions Principales</h1>
+
+    {% if transport %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom de l'Agent</th>
+                    <th>Prénom de l'Agent</th>
+                    <th>Type de Mission</th>
+                    <th>Nombre de Missions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transport in transport %}
+                    <tr>
+                        <td>{{ transport.Nom_Agent }}</td>
+                        <td>{{ transport.Prenom_Agent }}</td>
+                        <td>{{ transport.Mission_Principale }}</td>
+                        <td>{{ transport.Nombre_Missions }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune donnée disponible.</p>
+    {% endif %}
+{% endblock %}

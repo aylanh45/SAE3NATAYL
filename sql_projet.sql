@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS Agent;
 DROP TABLE IF EXISTS Moyen_transport;
 DROP TABLE IF EXISTS Lieu;
 
---#mysql --user=nfoucaul  --password=mdp --host=serveurmysql --database=BDD_nfoucaul
+#mysql --user=nfoucaul  --password=mdp --host=serveurmysql --database=BDD_nfoucaul
 CREATE TABLE Agent
 (
     Id_Agent        INT AUTO_INCREMENT,
@@ -33,6 +33,7 @@ CREATE TABLE Mission
     Kg_CO2     NUMERIC(15, 2),
     Id_TypeMission INT NOT NULL ,
     Id_Agent   INT NOT NULL,
+    Budget NUMERIC(15),
     PRIMARY KEY (Id_Mission),
     FOREIGN KEY (Id_TypeMission) REFERENCES Type_mission (Id_TypeMission) ,
     FOREIGN KEY (Id_Agent) REFERENCES Agent (Id_Agent)
@@ -107,12 +108,12 @@ VALUES (NULL, 'Besoul', 'Bertrand', '9 rue de tilted tower', '6 rue de Flush Fac
        (NULL, 'Haddouchi', 'Aylan', '6 rue de Flush Factory', '6 rue de Retail Row', 061111111)
 ;
 
-INSERT INTO Mission (Id_Mission, DateDébut, DateFin, Kg_CO2, Id_Agent, Id_TypeMission)
-VALUES (NULL, '2024-01-18', '2024-02-20', 60, 1, 1),
-       (NULL, '2024-02-23', '2024-02-27', 2822, 2, 2),
-       (NULL, '2024-03-12', '2024-03-12', 0.136, 3, 3),
-       (NULL, '2024-04-04', '2024-04-12', 4013, 4, 4),
-       (NULL, '2024-05-28', '2024-06-01', 47, 5, 5)
+INSERT INTO Mission (Id_Mission, DateDébut, DateFin, Kg_CO2, Id_Agent, Id_TypeMission, Budget)
+VALUES (NULL, '2024-01-18', '2024-02-20', 60, 1, 1,1000),
+       (NULL, '2024-02-23', '2024-02-27', 2822, 2, 2,2500),
+       (NULL, '2024-03-12', '2024-03-12', 0.136, 3, 3,3000),
+       (NULL, '2024-04-04', '2024-04-12', 4013, 4, 4,4000),
+       (NULL, '2024-05-28', '2024-06-01', 47, 5, 5,6700)
 ;
 
 INSERT INTO Moyen_transport (id_MoyenTransport, LibelleTransport, EmissionsCO2_km)
@@ -124,11 +125,11 @@ VALUES (NULL, 'Train', 0.19),
 ;
 
 INSERT INTO Etape(Id_Etape, DistanceParcourue, id_MoyenTransport, Id_Mission, Heure_depart, Heure_arrivee, Id_Lieu_depart, Id_Lieu_arrivee)
-VALUES (NULL, '315', 1, 1,"17:03:04","19:43:48",4, 5),
-       (NULL, '576', 4, 2,"16:59:34","17:03:04",6,2),
-       (NULL, '4', 3, 3,"09:38:50", "16:59:34",7,1),
-       (NULL, '819', 2, 4,"16:59:34", "09:38:50",1),
-       (NULL, '224', 5, 5,"16:59:34", "19:43:48", 3,4)
+VALUES (NULL, '315', 1, 1,'17:03:04','19:43:48',4, 5),
+       (NULL, '576', 4, 2,'16:59:34','17:03:04',6,2),
+       (NULL, '4', 3, 3,'09:38:50', '16:59:34',7,1),
+       (NULL, '819', 2, 4,'16:59:34', '09:38:50',1, 3),
+       (NULL, '224', 5, 5,'16:59:34', '19:43:48', 3,4)
 ;
 
 
@@ -138,3 +139,12 @@ SELECT * FROM Moyen_transport;
 SELECT * FROM Lieu;
 SELECT * FROM Mission;
 SELECT * FROM Etape;
+
+
+
+
+
+
+
+
+

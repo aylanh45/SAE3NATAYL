@@ -3,69 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire de modification de Mission</title>
+    <title>Modifier une étape</title>
     <!-- Inclure Bootstrap 5 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.4.0/dist/css/bootstrap.min.css">
 </head>
-{% extends 'layout.html' %}
 <body>
     <div class="container mt-4">
-        <h1>Formulaire de modification de Mission</h1>
-        <form action="/mission/edit" method="post">
-            <!-- Champ caché pour l'ID de la mission -->
-            <input type="hidden" name="Id_Mission" value="{{ mission.id }}">
-
+        <h1>Modifier une étape</h1>
+        <form action="/etape/edit" method="post">
+            <input type="hidden" name="IdEtape" value="{{ etape.Id_Etape }}">
             <div class="mb-3">
-                <label for="DateDébut" class="form-label">Date de début de la mission :</label>
-                <input type="date" class="form-control" id="DateDébut" placeholder="Entrez la date de début de la mission" required value="{{ mission.DateDébut }}" name="DateDébut">
+                <label for="DistanceParcourue" class="form-label">Distance parcourue :</label>
+                <input type="number" class="form-control" id="DistanceParcourue" name="DistanceParcourue" value="{{ etape.DistanceParcourue }}" required>
             </div>
-
             <div class="mb-3">
-                <label for="DateFin" class="form-label">Date de fin de la mission :</label>
-                <input type="date" class="form-control" id="DateFin" placeholder="Entrez la date de fin de la mission" required value="{{ mission.DateFin }}" name="DateFin">
-            </div>
-
-            <div class="mb-3">
-                <label for="Kg_CO2" class="form-label">Nombre de kg de CO2 :</label>
-                <input type="number" class="form-control" id="Kg_CO2" placeholder="Entrez le nombre de kg de CO2" required value="{{ mission.Kg_CO2 }}" name="Kg_CO2" step="0.01">
-            </div>
-
-           <div class="mb-3">
-                <label for="Id_Agent" class="form-label">Nom de l'agent :</label>
-                <select class="form-select" name="Id_Agent" required>
-                    {% for agent in agents %}
-                        <option value="{{ agent['Id_Agent'] }}"
-                            {% if agent['Id_Agent'] == mission['Id_Agent'] %}
+                <label for="Id_MoyenTransport" class="form-label">Moyen de transport :</label>
+                <select name="Id_MoyenTransport" class="form-select" required>
+                    {% for moyen in moyens_transport %}
+                        <option value="{{ moyen.Id_MoyenTransport }}"
+                                {% if moyen.Id_MoyenTransport == etape.Id_MoyenTransport %}
                                 selected
-                            {% endif %}>
-
-                            {{ agent['Nom'] }}
+                                {% endif %}>
+                            {{ moyen.LibelleTransport }}
                         </option>
                     {% endfor %}
                 </select>
             </div>
 
-
-
+            <!-- Lieu départ -->
             <div class="mb-3">
-                <label for="Id_TypeMission" class="form-label">Type de la mission :</label>
-                <select class="form-select" name="Id_TypeMission" required>
-                    {% for type_mission in type_missions %}
-                        <option value="{{ type_mission['Id_TypeMission'] }}"
-                            {% if type_mission['Id_TypeMission'] == mission['Id_TypeMission'] %}
+                <label for="Id_Lieu_depart" class="form-label">Lieu de départ :</label>
+                <select name="Id_Lieu_depart" class="form-select" required>
+                    {% for lieu in lieux %}
+                        <option value="{{ lieu.Id_Lieu }}"
+                                {% if lieu.Id_Lieu == etape.Id_Lieu_depart %}
                                 selected
-                            {% endif %}>
-                        {{ type_mission['LibelleTypeMission'] }}
+                                {% endif %}>{{ lieu.LibelleLieu }}
                         </option>
                     {% endfor %}
                 </select>
             </div>
+            <div class="mb-3">
+                <label for="Id_Lieu_arrivee" class="form-label">Lieu d'arrivée :</label>
+                <select name="Id_Lieu_arrivee" class="form-select" required>
+                    {% for lieu in lieux %}
+                        <option value="{{ lieu.Id_Lieu }}"
+                                {% if lieu.Id_Lieu == etape.Id_Lieu_arrivee %}
+                                selected
+                                {% endif %}>{{ lieu.LibelleLieu }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="Id_Mission" class="form-label">Mission :</label>
+                <select name="Id_Mission" class="form-select" required>
+                        {% for mission in missions %}
+                            <option value="{{ mission.Id_Mission }}"
+                                    {% if mission.Id_Mission == etape.Id_Mission %}
+                                        selected
+                                    {% endif %}>
+                                {{ mission.TypeMission }}
+                            </option>
+                        {% endfor %}
+                </select>
+            </div>
 
+            <!-- Submit -->
             <button type="submit" class="btn btn-primary">Enregistrer</button>
         </form>
     </div>
 
     <!-- Inclure Bootstrap 5 JS (pour les fonctionnalités supplémentaires) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.4.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

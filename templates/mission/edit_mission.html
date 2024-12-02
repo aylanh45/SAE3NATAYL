@@ -3,69 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire de modification de Mission</title>
-    <!-- Inclure Bootstrap 5 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/css/bootstrap.min.css">
+    <title>Modifier une mission</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.4.0/dist/css/bootstrap.min.css">
 </head>
-{% extends 'layout.html' %}
 <body>
     <div class="container mt-4">
-        <h1>Formulaire de modification de Mission</h1>
+        <h1>Modifier une mission</h1>
         <form action="/mission/edit" method="post">
-            <!-- Champ caché pour l'ID de la mission -->
             <input type="hidden" name="Id_Mission" value="{{ mission.id }}">
 
             <div class="mb-3">
-                <label for="DateDébut" class="form-label">Date de début de la mission :</label>
-                <input type="date" class="form-control" id="DateDébut" placeholder="Entrez la date de début de la mission" required value="{{ mission.DateDébut }}" name="DateDébut">
+                <label for="DateDébut" class="form-label">Date de début :</label>
+                <input type="date" class="form-control" id="DateDébut" name="DateDébut" value="{{ mission.DateDébut }}" required>
             </div>
 
             <div class="mb-3">
-                <label for="DateFin" class="form-label">Date de fin de la mission :</label>
-                <input type="date" class="form-control" id="DateFin" placeholder="Entrez la date de fin de la mission" required value="{{ mission.DateFin }}" name="DateFin">
+                <label for="DateFin" class="form-label">Date de fin :</label>
+                <input type="date" class="form-control" id="DateFin" name="DateFin" value="{{ mission.DateFin }}" required>
             </div>
 
             <div class="mb-3">
-                <label for="Kg_CO2" class="form-label">Nombre de kg de CO2 :</label>
-                <input type="number" class="form-control" id="Kg_CO2" placeholder="Entrez le nombre de kg de CO2" required value="{{ mission.Kg_CO2 }}" name="Kg_CO2" step="0.01">
+                <label for="Kg_CO2" class="form-label">Kg de CO2 :</label>
+                <input type="number" class="form-control" id="Kg_CO2" name="Kg_CO2" value="{{ mission.Kg_CO2 }}" step="0.01" required>
             </div>
 
-           <div class="mb-3">
+            <div class="mb-3">
                 <label for="Id_Agent" class="form-label">Nom de l'agent :</label>
-                <select class="form-select" name="Id_Agent" required>
+                <select name="Id_Agent" class="form-select" required>
                     {% for agent in agents %}
-                        <option value="{{ agent['Id_Agent'] }}"
-                            {% if agent['Id_Agent'] == mission['Id_Agent'] %}
-                                selected
-                            {% endif %}>
-
-                            {{ agent['Nom'] }}
+                        <option value="{{ agent.Id_Agent }}"
+                                {% if agent.Id_Agent == mission.Id_Agent %}
+                                    selected
+                                {% endif %}>
+                            {{ agent.Nom }}
                         </option>
                     {% endfor %}
                 </select>
             </div>
-
-
 
             <div class="mb-3">
-                <label for="Id_TypeMission" class="form-label">Type de la mission :</label>
-                <select class="form-select" name="Id_TypeMission" required>
+                <label for="Id_TypeMission" class="form-label">Type de mission :</label>
+                <select name="Id_TypeMission" class="form-select" required>
                     {% for type_mission in type_missions %}
-                        <option value="{{ type_mission['Id_TypeMission'] }}"
-                            {% if type_mission['Id_TypeMission'] == mission['Id_TypeMission'] %}
-                                selected
-                            {% endif %}>
-                        {{ type_mission['LibelleTypeMission'] }}
+                        <option value="{{ type_mission.Id_TypeMission }}"
+                                {% if type_mission.Id_TypeMission == mission.Id_TypeMission %}
+                                    selected
+                                {% endif %}>
+                            {{ type_mission.LibelleTypeMission }}
                         </option>
                     {% endfor %}
                 </select>
             </div>
+
+            <div class="mb-3">
+                <label for="Budget" class="form-label">Budget :</label>
+                <input type="number" class="form-control" id="Budget" name="Budget" value="{{ mission.Budget }}" step="1" required>
+            </div>
+
+
+
+
 
             <button type="submit" class="btn btn-primary">Enregistrer</button>
         </form>
     </div>
 
-    <!-- Inclure Bootstrap 5 JS (pour les fonctionnalités supplémentaires) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.4.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

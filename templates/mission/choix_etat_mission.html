@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Choisir un État</title>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>Choisissez un état à afficher</h1>
+        <div>
+            <form action="/mission/etat-mission/agents">
+                <button type="submit">Missions par Agent</button>
+            </form>
+            <form action="/mission/etat-mission/budget">
+                <button type="submit">Total des Budgets des Missions</button>
+            </form>
+            <form action="/mission/etat-mission/agent_du_mois">
+                <button type="submit">Voir l'Agent du Mois</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

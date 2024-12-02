@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Choisir un État</title>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>Choisissez un état à afficher</h1>
+        <div>
+            <form action="/etape/etat-etape/mission">
+                <button type="submit">Nombre d'étapes dans une mission</button>
+            </form>
+            <form action="/etape/etat-etape/distance">
+                <button type="submit">Distance Totale entre étape par Type de Mission</button>
+            </form>
+            <form action="/etape/etat-etape/transport">
+                <button type="submit">Voir l'Agent du Mois</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

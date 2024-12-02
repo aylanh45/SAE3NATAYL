@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Agent du mois</title>
+{% endblock %}
+
+{% block body %}
+    <h1>Agent ayant pollué le moins</h1>
+    {% if agent %}
+        <p>L'agent du mois est <strong>{{ agent.Prenom_Agent }} {{ agent.Nom_Agent }}</strong> avec un total de <strong>{{ agent.Total_CO2 }} kg</strong> d'émissions de CO2.</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom de l'agent</th>
+                    <th>Prénom de l'agent</th>
+                    <th>Total des émissions de CO2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ agent.Nom_Agent }}</td>
+                    <td>{{ agent.Prenom_Agent }}</td>
+                    <td>{{ agent.Total_CO2 }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% else %}
+        <p>{{ message }}</p>
+    {% endif %}
+{% endblock %}
